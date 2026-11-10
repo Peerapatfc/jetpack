@@ -7,6 +7,7 @@ import {
 	ReportScopeProvider,
 	isPlanDateLimitedSection,
 } from '@jetpack-premium-analytics/data';
+import { StatsErrorBoundary } from '@jetpack-premium-analytics/error-reporting';
 import { Icon } from '@jetpack-premium-analytics/externals';
 import { jetpack, lookupWidgetIcon } from '@jetpack-premium-analytics/icons';
 import {
@@ -470,13 +471,15 @@ function SingleReport(): JSX.Element | null {
  */
 export function stage(): JSX.Element {
 	return (
-		<AnalyticsQueryClientProvider>
-			{ /* No compared period on this page, whatever a hand-edited URL carries. */ }
-			<ReportScopeProvider offersComparison={ false }>
-				<PeriodChangeSignalProvider>
-					<SingleReport />
-				</PeriodChangeSignalProvider>
-			</ReportScopeProvider>
-		</AnalyticsQueryClientProvider>
+		<StatsErrorBoundary>
+			<AnalyticsQueryClientProvider>
+				{ /* No compared period on this page, whatever a hand-edited URL carries. */ }
+				<ReportScopeProvider offersComparison={ false }>
+					<PeriodChangeSignalProvider>
+						<SingleReport />
+					</PeriodChangeSignalProvider>
+				</ReportScopeProvider>
+			</AnalyticsQueryClientProvider>
+		</StatsErrorBoundary>
 	);
 }
